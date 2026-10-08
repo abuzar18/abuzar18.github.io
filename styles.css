@@ -88,7 +88,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--acid); outline-
 .personal-note::after { content: ""; position: absolute; width: 320px; height: 320px; right: -150px; bottom: -190px; border: 1px solid rgba(24,35,31,.14); border-radius: 50%; box-shadow: 0 0 0 45px rgba(24,35,31,.025), 0 0 0 90px rgba(24,35,31,.02); }
 .note-marker { position: absolute; top: 28px; left: clamp(34px, 6vw, 72px); color: #718078; font: 500 .62rem var(--mono); letter-spacing: .12em; }
 .personal-portrait { margin: 22px 0 0; position: relative; z-index: 1; }
-.personal-portrait img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 28%; border-radius: 18px; filter: saturate(.82) contrast(1.03); box-shadow: 0 24px 50px rgba(30, 42, 37, .16); }
+.personal-portrait img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 28%; border-radius: 18px; filter: saturate(.82) contrast(1.03); box-shadow: 0 24px 50px rgba(30, 42, 37, .16); }
 .personal-portrait figcaption { margin-top: 13px; color: #253a32; font-size: .76rem; font-weight: 800; line-height: 1.35; }
 .personal-portrait figcaption span { color: #68766f; font: 400 .6rem var(--mono); }
 .personal-note .eyebrow { color: #33735f; }
