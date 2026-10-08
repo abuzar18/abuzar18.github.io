@@ -1,4 +1,4 @@
-# Abuzar Zulfiqar — Portfolio
+# Abuzar Zulfiqar | Portfolio
 
 Client-facing portfolio for Abuzar Zulfiqar, AI/ML Engineer and Solutions Architect.
 
