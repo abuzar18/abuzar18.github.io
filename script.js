@@ -22,6 +22,8 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
+if ('IntersectionObserver' in window) {
+  document.documentElement.classList.add('reveal-ready');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
@@ -29,12 +31,13 @@ const observer = new IntersectionObserver((entries) => {
       observer.unobserve(entry.target);
     }
   });
-}, { threshold: 0.12, rootMargin: '0px 0px -30px' });
+}, { threshold: 0, rootMargin: '0px 0px -20px' });
 
 document.querySelectorAll('.reveal').forEach((element, index) => {
   element.style.transitionDelay = `${Math.min(index % 4, 3) * 55}ms`;
   observer.observe(element);
 });
+}
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -65,3 +68,26 @@ filterButtons.forEach((button) => {
     });
   });
 });
+
+const copyEmailButton = document.querySelector('.copy-email');
+const emailLink = document.getElementById('contact-email');
+const copyStatus = document.querySelector('.copy-status');
+
+if (copyEmailButton && emailLink && copyStatus) {
+  copyEmailButton.hidden = false;
+  copyEmailButton.addEventListener('click', async () => {
+    const email = emailLink.textContent.trim();
+    try {
+      await navigator.clipboard.writeText(email);
+      copyStatus.textContent = 'Email copied to clipboard.';
+    } catch {
+      // Keep the address selectable when clipboard permission is unavailable.
+      const selection = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(emailLink);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      copyStatus.textContent = 'Select and copy the highlighted email address.';
+    }
+  });
+}
