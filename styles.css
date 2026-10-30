@@ -207,8 +207,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--acid); outline-
 .architecture-heading > p { margin: 0; color: var(--muted); font-size: .9rem; }
 .architecture-canvas { position: relative; padding: 54px 28px 26px; border: 1px solid var(--line); border-radius: 18px; background: #08130f; overflow: hidden; }
 .architecture-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,175,114,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,175,114,.04) 1px, transparent 1px); background-size: 32px 32px; mask-image: linear-gradient(to bottom, black, transparent); }
-.arch-lane { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(130px,1fr) 56px minmax(130px,1fr) 56px minmax(130px,1fr) 56px minmax(130px,1fr) 56px minmax(130px,1fr); align-items: center; gap: 0; }
-.lane-release { margin-top: 26px; grid-template-columns: minmax(130px,1fr) 56px minmax(130px,1fr) 56px minmax(130px,1fr) 56px minmax(130px,1fr); }
+.arch-lane { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0,1fr) 56px minmax(0,1fr) 56px minmax(0,1fr) 56px minmax(0,1fr) 56px minmax(0,1fr); align-items: center; gap: 0; }
+.lane-release { margin-top: 26px; grid-template-columns: minmax(0,1fr) 56px minmax(0,1fr) 56px minmax(0,1fr) 56px minmax(0,1fr); }
 .lane-label { position: absolute; left: 0; top: -26px; color: #748a81; font: 500 .52rem var(--mono); letter-spacing: .12em; }
 .arch-node { min-height: 104px; padding: 16px; border: 1px solid var(--line); border-radius: 11px; background: rgba(11,23,20,.96); display: flex; flex-direction: column; justify-content: center; box-shadow: 0 12px 26px rgba(0,0,0,.18); }
 .arch-node small { color: #758e84; font: 500 .5rem var(--mono); letter-spacing: .1em; }
@@ -382,3 +382,57 @@ main, .section-shell, .section-shell *, .site-header > *, .site-footer > * { min
   .blueprint-caption { left: 14px; right: 14px; }
   .release-row { grid-template-columns: 76px minmax(0, 1fr) 44px; gap: 8px; }
 }
+
+/* Content-driven sizing keeps diagrams readable with larger text and narrow windows. */
+html { -webkit-text-size-adjust: 100%; }
+img, video { max-width: 100%; }
+.brand-mark, .node-icon { flex-shrink: 0; }
+.site-header { gap: 12px; }
+.site-nav > a, .case-filter, .site-footer nav a { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+.site-footer nav { flex-wrap: wrap; }
+.system-canvas { height: auto; display: flex; flex-direction: column; gap: 22px; padding: 26px 20px; }
+.system-canvas .node { position: relative; inset: auto; width: min(100%, 240px); align-self: flex-start; }
+.system-canvas .node-policy, .system-canvas .node-observe { align-self: flex-end; }
+.system-canvas .connector { display: none; }
+.system-canvas .signal-card { position: relative; inset: auto; align-self: flex-start; }
+.system-canvas .signal-bottom { align-self: flex-end; }
+.blueprint-caption { position: static; margin-top: 36px; }
+.blueprint-visual { min-height: 0; }
+.mini-console, .release-panel { overflow: visible; }
+.system-log { height: auto; min-height: 46px; flex-wrap: wrap; }
+.system-log p { margin-block: 10px; }
+.video-frame { height: 0; padding-bottom: 56.25%; aspect-ratio: auto; }
+.video-frame iframe { position: absolute; inset: 0; }
+.site-header { -webkit-backdrop-filter: blur(18px); }
+@media (max-width: 1100px) {
+  .brand-name { display: none; }
+  .js .menu-toggle { display: block; }
+  .site-nav { position: absolute; left: 0; right: 0; top: calc(100% + 8px); padding: 12px; border: 1px solid var(--line); border-radius: 15px; background: #0a1713; flex-direction: column; align-items: stretch; max-height: calc(100vh - 112px); max-height: calc(100dvh - 112px); overflow-y: auto; overscroll-behavior: contain; }
+  .js .site-nav { display: none; }
+  .js .site-nav.open { display: flex; }
+  html:not(.js) .site-header { flex-wrap: wrap; position: relative; }
+  html:not(.js) .site-nav { display: flex; position: static; width: 100%; max-height: none; }
+}
+@media (max-width: 480px) {
+  .section-shell { width: calc(100% - 24px); }
+  .hero h1 { font-size: clamp(2.25rem, 13vw, 3.9rem); }
+  .personal-note, .cta, .introduction { padding-inline: 18px; }
+  .mini-console p { grid-template-columns: minmax(0, .7fr) minmax(0, 1fr); gap: 8px; }
+  .capability { grid-template-columns: 28px minmax(0, 1fr); gap: 12px; }
+  .deliverables-list > div { grid-template-columns: 26px minmax(0, 1fr); }
+  .stack-card, .case-card, .fit-check { padding: 22px 18px; }
+  .system-canvas { padding: 22px 12px; }
+}
+@media (max-height: 500px) and (max-width: 1100px) {
+  .site-header { position: relative; top: 0; }
+  .site-nav { max-height: calc(100vh - 100px); max-height: calc(100dvh - 100px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js.reveal-ready .reveal { opacity: 1; transform: none; }
+}
+@media (hover: none) {
+  .button:hover, .project:hover, .leadership-card:hover { transform: none; }
+}
+
+.node-icon { width: 36px; flex: 0 0 36px; }
+.arch-arrow b { white-space: nowrap; }
