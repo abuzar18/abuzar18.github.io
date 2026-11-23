@@ -1,0 +1,52 @@
+name: Build CV
+
+# Compiles cv/main.tex into assets/Abuzar-Zulfiqar-CV.pdf whenever the CV source changes,
+# so the "Download CV" button on the portfolio always serves the latest version.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "cv/**"
+      - ".github/workflows/build-cv.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-cv
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prepare a web-sized headshot for the CV
+        run: |
+          pip install --quiet pillow
+          python -c "from PIL import Image; Image.open('assets/AI PIC.png').convert('RGB').resize((360, 360), Image.LANCZOS).save('cv/photo.jpg', quality=85)"
+
+      - name: Compile LaTeX
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: main.tex
+          working_directory: cv
+
+      - name: Publish PDF to the site
+        run: |
+          cp cv/main.pdf assets/Abuzar-Zulfiqar-CV.pdf
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/Abuzar-Zulfiqar-CV.pdf
+          if git diff --cached --quiet; then
+            echo "CV PDF unchanged."
+          else
+            git commit -m "Build CV PDF from cv/main.tex"
+            git push
+          fi
