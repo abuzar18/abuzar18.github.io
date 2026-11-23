@@ -1,6 +1,6 @@
 # Abuzar Zulfiqar | Portfolio
 
-Client-facing portfolio for Abuzar Zulfiqar, AI/ML Engineer and Solutions Architect.
+Client-facing portfolio for Abuzar Zulfiqar, freelance AI/ML Engineer building AI agents, RAG assistants and LLM automation.
 
 The site presents production AI systems, Agentic AI, MLOps/LLMOps, AWS architecture, selected professional outcomes and inspectable open-source references.
 
