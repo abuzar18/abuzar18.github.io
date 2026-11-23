@@ -48,5 +48,10 @@ jobs:
             echo "CV PDF unchanged."
           else
             git commit -m "Build CV PDF from cv/main.tex"
-            git push
+            # Other commits can land while LaTeX compiles: rebase onto the latest main and retry.
+            for attempt in 1 2 3; do
+              git pull --rebase origin main && git push && exit 0
+              sleep 5
+            done
+            exit 1
           fi
