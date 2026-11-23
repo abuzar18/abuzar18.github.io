@@ -22,12 +22,14 @@ AI agents, agentic AI, LangGraph, LangChain, retrieval-augmented generation (RAG
 
 ## Links
 - Portfolio: https://abuzar18.github.io/
+- CV (PDF): https://abuzar18.github.io/assets/Abuzar-Zulfiqar-CV.pdf
 - LinkedIn: https://www.linkedin.com/in/abuzar-zulfiqar/
 - GitHub: https://github.com/abuzar18
 - Upwork: https://www.upwork.com/freelancers/abuzarz4
 - Email: abuzarzulfiqar18@gmail.com
 
 ## Open-source
+- Llama Agentic RAG (flagship): https://github.com/abuzar18/llama-agentic-rag
 - Agentic AI Control Plane: https://github.com/abuzar18/agentic-ai-control-plane
 - AWS MLOps Reference Platform: https://github.com/abuzar18/aws-mlops-reference-platform
 - Production AI Systems Blueprint: https://github.com/abuzar18/production-ai-systems-blueprint
