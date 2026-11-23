@@ -91,3 +91,29 @@ if (copyEmailButton && emailLink && copyStatus) {
     }
   });
 }
+
+
+// Interactive 3D tilt for the hero system diagram (desktop pointers only, respects reduced motion)
+const heroSection = document.querySelector('.hero');
+const heroWindow = document.querySelector('.hero-system .system-window');
+const canTilt = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+  && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (heroSection && heroWindow && canTilt) {
+  let frame = 0;
+  heroWindow.style.transition = 'transform .35s cubic-bezier(.2,.7,.2,1)';
+  heroWindow.style.willChange = 'transform';
+  heroSection.addEventListener('pointermove', (event) => {
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(() => {
+      const rect = heroSection.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      heroWindow.style.transform = `perspective(1200px) rotateY(${(-4 + x * 12).toFixed(2)}deg) rotateX(${(2 - y * 9).toFixed(2)}deg) translateZ(0)`;
+    });
+  });
+  heroSection.addEventListener('pointerleave', () => {
+    cancelAnimationFrame(frame);
+    heroWindow.style.transform = '';
+  });
+}
