@@ -1,0 +1,46 @@
+/* Shared styles for case-study, hire and blog pages. Matches the main site palette. */
+:root{--bg:#07110f;--surface:#0b1714;--surface-2:#0e1d19;--line:rgba(194,244,221,.14);--line-strong:rgba(194,244,221,.28);--text:#eef8f3;--muted:#9bb3aa;--acid:#b7f36b;--mint:#61e6bd;--font:"Manrope",system-ui,sans-serif;--mono:"DM Mono",ui-monospace,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 85% 5%,rgba(72,194,154,.11),transparent 28rem),var(--bg);color:var(--text);font-family:var(--font);line-height:1.7;overflow-wrap:anywhere}
+a{color:var(--mint)}a:hover{color:var(--acid)}
+a:focus-visible{outline:3px solid var(--acid);outline-offset:3px}
+.pg-header{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;max-width:1080px;margin:0 auto;padding:1.25rem 1.5rem;border-bottom:1px solid var(--line)}
+.pg-header nav{display:flex;gap:1.2rem;flex-wrap:wrap;align-items:center}
+.pg-header nav a{color:var(--muted);text-decoration:none;font-weight:600}
+.pg-header nav a:hover{color:var(--text)}
+.pg-brand{display:flex;align-items:center;gap:.6rem;color:var(--text)!important;text-decoration:none;font-weight:800}
+.pg-mark{display:inline-grid;place-items:center;width:2.2rem;height:2.2rem;border-radius:10px;background:var(--acid);color:var(--bg);font-family:var(--mono);font-size:.85rem}
+.pg-cta{border:1px solid var(--line-strong);padding:.45rem .9rem;border-radius:999px;color:var(--text)!important}
+.pg-main{max-width:1080px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+.pg-article{max-width:760px}
+.pg-wide{max-width:none}
+.pg-kicker{font-family:var(--mono);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--acid);margin:0 0 .6rem}
+h1{font-size:clamp(1.9rem,4.5vw,3rem);line-height:1.12;margin:0 0 1rem;letter-spacing:-.02em}
+h2{font-size:1.35rem;margin:2.2rem 0 .6rem}
+.pg-lede{font-size:1.15rem;color:var(--muted)}
+.pg-meta{color:var(--muted);font-size:.92rem}
+.pg-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin:1.8rem 0}
+.pg-metric{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1rem}
+.pg-metric strong{display:block;font-size:1.5rem;color:var(--acid)}
+.pg-metric span{color:var(--muted);font-size:.88rem}
+ul{padding-left:1.2rem}li{margin:.35rem 0}
+.pg-tags{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:.5rem}
+.pg-tags li{margin:0;font-family:var(--mono);font-size:.8rem;border:1px solid var(--line-strong);border-radius:999px;padding:.25rem .7rem;color:var(--muted)}
+.pg-cards{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin-top:2rem}
+.pg-card{margin:0}
+.pg-card a{display:block;height:100%;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:1.4rem;color:var(--text);text-decoration:none;transition:border-color .2s,transform .2s}
+.pg-card a:hover{border-color:var(--acid);transform:translateY(-3px)}
+.pg-card h2{margin:.2rem 0 .5rem;font-size:1.15rem}
+.pg-card p{color:var(--muted);margin:0;font-size:.95rem}
+.pg-cta-box{max-width:760px;margin-top:3rem;background:var(--surface-2);border:1px solid var(--line-strong);border-radius:20px;padding:1.6rem}
+.pg-cta-box h2{margin-top:0}
+.pg-btn{display:inline-block;background:var(--acid);color:var(--bg)!important;font-weight:800;text-decoration:none;padding:.65rem 1.1rem;border-radius:999px;margin:.3rem .4rem .3rem 0}
+.pg-btn-ghost{background:transparent;color:var(--text)!important;border:1px solid var(--line-strong)}
+.pg-faq details{border:1px solid var(--line);border-radius:14px;padding:.8rem 1rem;margin:.6rem 0;background:var(--surface)}
+.pg-faq summary{cursor:pointer;font-weight:700}
+.pg-prose table{border-collapse:collapse;width:100%;margin:1.2rem 0;font-size:.95rem}
+.pg-prose th,.pg-prose td{border:1px solid var(--line);padding:.55rem .7rem;text-align:left}
+.pg-prose th{background:var(--surface)}
+.pg-prose code{font-family:var(--mono);background:var(--surface);padding:.1rem .35rem;border-radius:6px;font-size:.9em}
+.pg-footer{max-width:1080px;margin:0 auto;padding:1.5rem;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+@media (prefers-reduced-motion:reduce){.pg-card a{transition:none}.pg-card a:hover{transform:none}}
