@@ -1,0 +1,202 @@
+% =====================================================================
+% Abuzar Zulfiqar - AI/ML Engineer CV (v4, Nov 2026)
+% ONE SWITCH, TWO VERSIONS:
+%   \showphototrue  -> client / CEO / Gulf & Pakistan version (with photo)
+%   \showphotofalse -> US / UK / EU recruiter & ATS version (no photo)
+% Built automatically by .github/workflows/build-cv.yml into assets/Abuzar-Zulfiqar-CV.pdf
+% =====================================================================
+\documentclass[a4paper,10pt]{article}
+
+\newif\ifshowphoto
+\showphototrue   % <-- change to \showphotofalse for the no-photo version
+
+\usepackage[margin=1.5cm,top=1.2cm,bottom=1.4cm,footskip=16pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[scaled=0.96]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{microtype}
+\usepackage{ragged2e}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{iftex}
+
+\ifPDFTeX
+\input{glyphtounicode}
+\pdfgentounicode=1
+\fi
+
+\definecolor{accent}{HTML}{173A52}
+\definecolor{accent2}{HTML}{2A7AB0}
+\definecolor{muted}{HTML}{5A6570}
+\definecolor{tile}{HTML}{EEF3F7}
+\definecolor{bandtext}{HTML}{CFE0EC}
+
+\hypersetup{
+  colorlinks=true, urlcolor=accent2, linkcolor=accent2,
+  pdftitle={Abuzar Zulfiqar - AI/ML Engineer (AI Agents, RAG, LLMOps)},
+  pdfauthor={Abuzar Zulfiqar},
+  pdfsubject={Curriculum Vitae},
+  pdfkeywords={AI Engineer, ML Engineer, Generative AI, LLM, RAG, AI Agents, LangGraph, LangChain, Azure OpenAI, AWS, FastAPI, Python, MLOps, LLMOps}
+}
+
+\pagestyle{plain}
+\raggedbottom
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{2em}
+
+% Section headings: accent label + thin rule
+\titleformat{\section}{\large\bfseries\color{accent}}{}{0pt}{}[{\color{accent2}\vspace{1pt}\titlerule[0.8pt]}]
+\titlespacing*{\section}{0pt}{9pt}{4pt}
+
+\setlist[itemize]{leftmargin=1.1em,itemsep=2pt,topsep=2pt,parsep=0pt,partopsep=0pt,label={\color{accent2}\textbullet}}
+
+% \role{Title}{Dates}{Company}{Location}
+\newcommand{\role}[4]{%
+  {\large\bfseries #1}\hfill{\bfseries\color{accent} #2}\\
+  {\color{accent2}\bfseries #3}\hfill{\color{muted}\itshape #4}\par
+}
+\newcommand{\skill}[2]{{\bfseries\color{accent}#1:} #2\par\vspace{1pt}}
+\newcommand{\stack}[1]{{\color{muted}\small\itshape Stack: #1}\par}
+
+% Impact tile
+\newcommand{\metric}[2]{%
+  {\setlength{\fboxsep}{5pt}\colorbox{tile}{\parbox[c][1.25cm][c]{\dimexpr0.25\textwidth-12pt}{\centering
+    {\Large\bfseries\color{accent}#1}\\[2pt]{\footnotesize\color{muted}#2}}}}}
+
+\begin{document}
+\RaggedRight
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+
+% =========================== HEADER BAND ===========================
+\vspace*{-1.62cm}
+\noindent\hspace*{-1.5cm}%
+{\setlength{\fboxsep}{0pt}\colorbox{accent}{\parbox{\paperwidth}{%
+  \vspace{14pt}%
+  \hspace*{1.5cm}%
+  \ifshowphoto
+    \begin{minipage}[c]{2.75cm}
+      \begin{tikzpicture}
+        \clip (0,0) circle (1.3cm);
+        \node at (0,0) {\includegraphics[width=2.6cm]{photo.jpg}};
+      \end{tikzpicture}
+    \end{minipage}\hspace{0.45cm}%
+    \begin{minipage}[c]{\dimexpr\textwidth-3.2cm}
+  \else
+    \begin{minipage}[c]{\textwidth}
+  \fi
+    \color{white}
+    {\fontsize{24}{28}\selectfont\bfseries Abuzar Zulfiqar}\par\vspace{4pt}
+    {\large\bfseries AI/ML Engineer}{\large\color{bandtext}~~|~~AI Agents, RAG \& LLM Automation~~|~~Azure \& AWS}\par\vspace{6pt}
+    \hypersetup{urlcolor=white}
+    {\small\color{bandtext}
+    Lahore, Pakistan \,·\, {\color{white}\bfseries Open to relocation} \,|\, +92 301 0202022 \,|\,
+    \href{mailto:abuzarzulfiqar18@gmail.com}{abuzarzulfiqar18@gmail.com}\\[2pt]
+    \href{https://abuzar18.github.io/}{abuzar18.github.io} \,|\,
+    \href{https://www.linkedin.com/in/abuzar-zulfiqar}{linkedin.com/in/abuzar-zulfiqar} \,|\,
+    \href{https://github.com/abuzar18}{github.com/abuzar18} \,|\,
+    \href{https://www.upwork.com/freelancers/abuzarz4}{Upwork}\par}
+  \end{minipage}%
+  \vspace{14pt}%
+}}}
+\hypersetup{urlcolor=accent2}
+\vspace{8pt}
+
+% =========================== IMPACT STRIP ===========================
+\noindent\metric{30$\times$ faster}{p50: 126\,s $\rightarrow$ 4\,s on 1.24M records}\hfill
+\metric{25+}{production RAG assistants shipped}\hfill
+\metric{$-$35\%}{LLM API cost ($-$40\% latency)}\hfill
+\metric{60--70\%}{less drafting time via AI agents}\par
+
+% =========================== SUMMARY ===========================
+\section*{Summary}
+AI/ML engineer with \textbf{3+ years} taking Generative AI from prototype to production for enterprise
+knowledge, financial research and healthcare-insurance workflows, now delivering independently for startups and SMBs. Builds RAG assistants, agentic document
+workflows and LLM data pipelines with Python, FastAPI, LangGraph, Azure OpenAI and AWS, and focuses on what
+keeps AI reliable and affordable in production: evaluation, grounding, PII redaction, idempotency,
+observability and cost control.
+
+% =========================== SKILLS ===========================
+\section*{Core Skills}
+\skill{Generative AI \& Agents}{LLMs (GPT-4, Azure OpenAI, Llama), LangGraph, LangChain, RAG, embeddings, tool calling, structured outputs, prompt engineering, human-in-the-loop agents, text-to-SQL, n8n}
+\skill{Backend \& Data}{Python, FastAPI, Pydantic, REST APIs, async processing, PostgreSQL, PgBouncer, Redis, SQL, Pandas, Pinecone, FAISS, ChromaDB}
+\skill{Cloud \& DevOps}{AWS (Lambda, SQS, S3, API Gateway, RDS, CloudWatch, CloudFormation), Azure, Docker, Kubernetes, Terraform, GitHub Actions, Azure DevOps, CI/CD}
+\skill{LLMOps / MLOps}{Evaluation harnesses, grounding checks, schema validation, prompt/model versioning, drift monitoring, release gates, PHI/PII redaction, audit logs, latency \& token-cost telemetry}
+\skill{ML \& Deep Learning}{PyTorch, TensorFlow, Hugging Face Transformers, scikit-learn, NLP, text classification, information extraction, RNNs, SHAP, LIME}
+
+% =========================== EXPERIENCE ===========================
+\section*{Experience}
+
+\role{Freelance AI Engineer -- AI Agents, RAG \& Automation}{Aug 2026 -- Present}{Self-employed (Upwork \& direct clients)}{Remote}
+\begin{itemize}
+  \item Build AI agents, RAG assistants and workflow automations for startups and SMBs, scoping each engagement from prototype to a measurable, production-ready deployment.
+  \item Packaged a reusable delivery standard (policy gates, human approval, idempotency, audit logging, testing and CI/CD) as open-source projects, led by a citation-grounded Llama RAG system with an evaluation harness (see Open Source).
+\end{itemize}
+\vspace{4pt}
+
+\role{Software Engineer (AI/ML)}{Aug 2025 -- Jul 2026}{Rolustech}{Lahore, Pakistan (Hybrid)}
+\begin{itemize}
+  \item Cut p50 career-matching time from \textbf{$\sim$126\,s to 4\,s ($\sim$30$\times$)} across \textbf{1.24M account records} at 100 concurrent requests by replacing sequential scans with normalized, indexed PostgreSQL queries and event-driven API Gateway, Lambda and SQS processing with S3 payload offloading.
+  \item Owned LLM research and enrichment pipelines for executive biographies, investment intelligence and earnings-call analysis: search orchestration, content extraction and source-aware synthesis into schema-validated JSON/HTML synced to the CRM.
+  \item Designed meeting-intelligence automation: FastAPI services schedule meeting bots, ingest recording and transcript webhooks into S3, generate Azure OpenAI summaries and action items, and sync results to \textbf{Salesforce}.
+  \item Hardened pipelines with authentication, signed requests, idempotency, deduplication, retries with exponential backoff and replay-safe recovery; managed database load with PgBouncer and worker concurrency limits.
+  \item Ran CI/CD for tests, migrations, Terraform infrastructure and deployments; added structured logging, CloudWatch monitoring and per-request LLM token, cost and latency telemetry (including corrected reasoning-token billing).
+\end{itemize}
+\stack{Python, FastAPI, Azure OpenAI, PostgreSQL, PgBouncer, AWS Lambda/SQS/S3/API Gateway, Terraform, Salesforce}
+\vspace{4pt}
+
+\role{AI/ML Engineer}{Jul 2023 -- Aug 2025}{OptimusFox (AI Intern, Jun -- Jul 2023)}{Lahore, Pakistan}
+\begin{itemize}
+  \item Led delivery of \textbf{25+ policy-focused RAG assistants} (GPT-4, Llama, LangChain, Pinecone) with automated ingestion, ETL, embedding and index sync on Kubernetes, reducing manual knowledge-refresh work by \textbf{$\sim$90\%}.
+  \item Reduced inference latency by \textbf{$\sim$40\%} and LLM API costs by \textbf{35\%} through prompt routing and Redis caching.
+  \item Built an \textbf{agentic insurance-appeal workflow} in LangGraph: document ingestion, fact extraction, RAG over policy clauses and citation-grounded drafting with Azure OpenAI; schema-validated DOCX/PDF output with e-signature handoff, PHI/PII redaction, audit logs and prompt/model versioning. Cut drafting time by \textbf{60--70\%}.
+  \item Developed \textbf{SAM BOT}, a conversational BI service (FastAPI, Azure OpenAI, PandasAI) that turns natural-language questions over spreadsheets and databases into tables, charts and executive summaries; encoding business rules into text-to-SQL prompts cut manual analysis time by \textbf{$\sim$60\%}.
+  \item Contributed to architecture reviews, technical planning, production troubleshooting and mentoring for customer-facing AI services; as an intern, built and evaluated the AI prototypes and retrieval pipelines that were handed to delivery.
+\end{itemize}
+\stack{Python, LangChain, LangGraph, GPT-4, Llama, Azure OpenAI, Pinecone, Redis, PandasAI, FastAPI, Kubernetes}
+
+% =========================== OPEN SOURCE ===========================
+\section*{Open Source}
+\begin{itemize}
+  \item \href{https://github.com/abuzar18/llama-agentic-rag}{\textbf{Llama Agentic RAG}} (flagship): self-correcting, citation-grounded RAG on local Llama with relevance grading, query rewrite, groundedness checks and an LLM-as-judge eval harness; FastAPI service and MCP server. \textit{LangGraph, LangChain, Ollama, FastAPI, Docker, CI.}
+  \item \href{https://github.com/abuzar18/agentic-ai-control-plane}{\textbf{Agentic AI Control Plane}}: safe-agent architecture with policy gates, human approval, idempotent execution and typed audit events. \textit{Python, FastAPI, Docker, CI/CD.}
+  \item \href{https://github.com/abuzar18/aws-mlops-reference-platform}{\textbf{AWS MLOps Reference Platform}}: release promotion gates, drift measurement and infrastructure as code. \textit{FastAPI, CloudFormation, Docker, CI/CD.}
+  \item \href{https://github.com/abuzar18/production-ai-systems-blueprint}{\textbf{Production AI Systems Blueprint}}: citation-verified AI workflows with health checks, tests, observability and CI/CD. \textit{FastAPI, Docker, GitHub Actions.}
+\end{itemize}
+
+% =========================== LEADERSHIP ===========================
+\section*{Research Leadership \& Teaching}
+\role{Lead Researcher (Part-time)}{Oct 2019 -- Jun 2023}{COLAB, FAST-NUCES}{}
+\begin{itemize}
+  \item Led a \textbf{30-member} applied AI research team across NLP and ML: set technical roadmaps, reviewed architectures, standardized reproducible experiments and mentored researchers on evaluation, code quality and deployment.
+  \item Built a Wi-Fi human-activity-recognition system (RNN on Wi-Fi signals) with edge inference on Raspberry Pi for healthcare monitoring.
+\end{itemize}
+\vspace{3pt}
+\role{Teaching Assistant -- Digital Logic Design}{Jan 2021 -- Jun 2021}{FAST-NUCES}{}
+\begin{itemize}
+  \item Designed labs, assignments and workshops for \textbf{80+ students}, contributing to a \textbf{$\sim$15\% improvement} in average assessment performance.
+\end{itemize}
+
+% =========================== EDUCATION ===========================
+\section*{Education}
+\textbf{BS Computer Science}, FAST National University of Computer and Emerging Sciences (FAST-NUCES)\hfill{\bfseries\color{accent}2019 -- 2023}\par
+
+% =========================== CERTIFICATIONS ===========================
+\section*{Certifications}
+Microsoft Certified: Azure AI Engineer Associate (2024) \;|\; Hugging Face NLP Course (2023) \;|\; Databricks Lakehouse Fundamentals (2023) \;|\; Samsung Innovation Campus, Artificial Intelligence (2022)\par
+
+% =========================== RECOGNITION ===========================
+\section*{Recognition \& Community}
+\begin{itemize}
+  \item Ranked \textbf{top 30 of 200+ teams} at the ICPC programming contest hosted by GIKI (2022).
+  \item Organized and led \textbf{three LLM and MLOps workshops} for \textbf{150+ participants} at FAST-NUCES.
+\end{itemize}
+
+\end{document}
