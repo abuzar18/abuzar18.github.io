@@ -1,0 +1,33 @@
+# Abuzar Zulfiqar
+
+> AI/ML Engineer in Lahore, Pakistan (open to relocation worldwide, on-site, hybrid or remote). Builds production AI agents, RAG assistants, LLM automation and MLOps on Azure and AWS for founders, CTOs and product teams. Available for freelance projects and full-time roles.
+
+## Profile
+- Name: Abuzar Zulfiqar
+- Role: AI/ML Engineer | AI Agents, RAG & LLM Automation | Freelance AI Engineer
+- Location: Lahore, Pakistan. Open to relocation worldwide and to remote work.
+- Experience: 3+ years in production Generative AI (Rolustech, OptimusFox), freelance since Aug 2026
+- Education: BS Computer Science, FAST-NUCES (2019-2023)
+- Certification: Microsoft Certified Azure AI Engineer Associate (2024)
+
+## Skills
+AI agents, agentic AI, LangGraph, LangChain, retrieval-augmented generation (RAG), Azure OpenAI, OpenAI API, GPT-4, Llama, tool calling, structured outputs, text-to-SQL, n8n, Python, FastAPI, Pydantic, PostgreSQL, Redis, Pinecone, FAISS, AWS (Lambda, SQS, S3, API Gateway, CloudWatch, CloudFormation), Docker, Kubernetes, Terraform, GitHub Actions, MLOps, LLMOps, LLM evaluation, PII redaction, observability
+
+## Selected results
+- Cut p50 processing latency from about 126 s to 4 s across 1.24M records (AWS, PostgreSQL)
+- Delivered 25+ RAG knowledge assistants; about 40% lower inference latency and 35% lower LLM API cost
+- Agentic insurance-appeal drafting workflow (LangGraph, Azure OpenAI): 60-70% less drafting time
+- Conversational BI assistant with text-to-SQL: about 60% less manual analysis
+- Meeting intelligence automation from call recordings to Salesforce
+
+## Links
+- Portfolio: https://abuzar18.github.io/
+- LinkedIn: https://www.linkedin.com/in/abuzar-zulfiqar/
+- GitHub: https://github.com/abuzar18
+- Upwork: https://www.upwork.com/freelancers/abuzarz4
+- Email: abuzarzulfiqar18@gmail.com
+
+## Open-source
+- Agentic AI Control Plane: https://github.com/abuzar18/agentic-ai-control-plane
+- AWS MLOps Reference Platform: https://github.com/abuzar18/aws-mlops-reference-platform
+- Production AI Systems Blueprint: https://github.com/abuzar18/production-ai-systems-blueprint
