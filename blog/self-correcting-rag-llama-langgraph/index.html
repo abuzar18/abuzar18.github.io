@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Building a RAG System That Says “I Don&#x27;t Know”: Self-Correcting RAG with Llama 3.1 and LangGraph | Abuzar Zulfiqar</title>
+  <meta name="description" content="How to build a citation-grounded RAG pipeline on a local Llama model with relevance grading, query rewriting, groundedness checks and an evaluation suite that measures refusals.">
+  <meta name="author" content="Abuzar Zulfiqar">
+  <meta name="theme-color" content="#07110f">
+  <meta name="color-scheme" content="dark">
+  <link rel="canonical" href="https://abuzar18.github.io/blog/self-correcting-rag-llama-langgraph/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Building a RAG System That Says “I Don&#x27;t Know”: Self-Correcting RAG with Llama 3.1 and LangGraph | Abuzar Zulfiqar">
+  <meta property="og:description" content="How to build a citation-grounded RAG pipeline on a local Llama model with relevance grading, query rewriting, groundedness checks and an evaluation suite that measures refusals.">
+  <meta property="og:url" content="https://abuzar18.github.io/blog/self-correcting-rag-llama-langgraph/">
+  <meta property="og:image" content="https://abuzar18.github.io/assets/og-abuzar-zulfiqar.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/pages.css?v=20261123-2">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "Building a RAG System That Says “I Don't Know”: Self-Correcting RAG with Llama 3.1 and LangGraph", "description": "How to build a citation-grounded RAG pipeline on a local Llama model with relevance grading, query rewriting, groundedness checks and an evaluation suite that measures refusals.", "url": "https://abuzar18.github.io/blog/self-correcting-rag-llama-langgraph/", "datePublished": "2026-11-23", "dateModified": "2026-11-23", "author": {"@type": "Person", "@id": "https://abuzar18.github.io/#person", "name": "Abuzar Zulfiqar", "url": "https://abuzar18.github.io/"}, "keywords": "rag, llm, langgraph, python", "image": "https://abuzar18.github.io/assets/og-abuzar-zulfiqar.jpg", "mainEntityOfPage": "https://abuzar18.github.io/blog/self-correcting-rag-llama-langgraph/"}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://abuzar18.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Writing", "item": "https://abuzar18.github.io/blog/"}, {"@type": "ListItem", "position": 3, "name": "Self-correcting RAG with Llama 3.1 and LangGraph", "item": "https://abuzar18.github.io/blog/self-correcting-rag-llama-langgraph/"}]}, {"@type": "Person", "@id": "https://abuzar18.github.io/#person", "name": "Abuzar Zulfiqar", "url": "https://abuzar18.github.io/"}]}</script>
+</head>
+<body>
+  <header class="pg-header">
+    <a class="pg-brand" href="../../"><span class="pg-mark">AZ</span> Abuzar Zulfiqar</a>
+    <nav aria-label="Primary">
+      <a href="../../projects/">Case studies</a>
+      <a href="../../blog/">Writing</a>
+      <a href="../../hire-ai-engineer/">Hire</a>
+      <a class="pg-cta" href="https://www.upwork.com/freelancers/abuzarz4" rel="noreferrer">Start a project ↗</a>
+    </nav>
+  </header>
+  <main class="pg-main">
+    <article class="pg-article pg-prose">
+      <p class="pg-kicker">Writing · 2026-11-23</p>
+      <h1>Building a RAG System That Says “I Don&#x27;t Know”: Self-Correcting RAG with Llama 3.1 and LangGraph</h1>
+      <p class="pg-meta">By <a href="../../">Abuzar Zulfiqar</a> · 2026-11-23</p>
+      <p>Most RAG demos have the same flaw: ask them something the documents never mention, and they answer anyway, confidently and wrongly. In a demo that is a curiosity. In production it is how a support bot invents a refund policy.</p>
+<p>I built <a href="https://github.com/abuzar18/llama-agentic-rag">Llama Agentic RAG</a> around the opposite rule: <strong>an answer must be supported by cited sources, or the system says "I don't know."</strong> It runs fully locally on Llama 3.1 8B through Ollama, which fits in 8 GB of VRAM, so private documents never leave the machine.</p>
+<p>This post walks through the design and the choices that made it work on a small model.</p>
+<h2>The workflow</h2>
+<p>The pipeline is a LangGraph state machine with five stages:</p>
+<ol>
+<li><strong>Retrieve</strong> the top-k chunks from a vector index. Every chunk has a stable id such as <code>handbook.md#3</code>, so citations stay traceable.</li>
+<li><strong>Grade</strong> each chunk for relevance with the LLM before anything is generated. Off-topic context never reaches the answer.</li>
+<li><strong>Rewrite</strong> the query once if no chunk is relevant. Vague questions often recover here; if they don't, the graph refuses.</li>
+<li><strong>Generate</strong> an answer only from the numbered context, citing <code>[n]</code> after each claim.</li>
+<li><strong>Check groundedness</strong>: a judge prompt verifies the answer against the context. An unsupported answer is replaced by a refusal.</li>
+</ol>
+<p>The key idea is that hallucinations become refusals, not wrong answers. A refusal is annoying; a confident wrong answer is expensive.</p>
+<h2>Making it work on an 8B model</h2>
+<p>Large models forgive sloppy prompts. Small models don't, so a few details mattered more than any framework choice:</p>
+<ul>
+<li><strong>One-word verdicts.</strong> Llama 3.1 8B is unreliable with complex JSON schemas, so the grading and groundedness prompts ask for <code>yes</code> or <code>no</code>, and parsing is tolerant of extra words.</li>
+<li><strong>Strip reasoning tags.</strong> If you swap in a reasoning model, its <code>&lt;think&gt;</code> blocks are removed before parsing.</li>
+<li><strong>Citations are enforced, not requested.</strong> An answer without valid <code>[n]</code> citations is treated as ungrounded, even if it sounds right.</li>
+<li><strong>Config over code.</strong> Every model, path and threshold is an environment variable, so trying another Ollama model is a one-line change.</li>
+</ul>
+<h2>Measure the refusals</h2>
+<p>A RAG system that never says "I don't know" isn't production-ready, so the evaluation set deliberately includes unanswerable questions. The harness reports:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>What it tells you</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Retrieval hit rate</td>
+<td>Did we retrieve an expected source for answerable questions?</td>
+</tr>
+<tr>
+<td>Citation precision</td>
+<td>Do cited chunks come from expected sources?</td>
+</tr>
+<tr>
+<td>Refusal accuracy</td>
+<td>Were unanswerable questions correctly refused?</td>
+</tr>
+<tr>
+<td>False-refusal rate</td>
+<td>Were answerable questions wrongly refused?</td>
+</tr>
+<tr>
+<td>Judge correctness</td>
+<td>LLM-as-judge score against a reference answer</td>
+</tr>
+<tr>
+<td>p50 / p95 latency</td>
+<td>What does it cost the user in time?</td>
+</tr>
+</tbody>
+</table>
+<p>Refusal accuracy and false-refusal rate pull against each other, which is exactly why you need both. Tighten the groundedness check and refusals get safer while false refusals rise. The numbers make that trade-off visible instead of a matter of opinion.</p>
+<p>Treat prompt and model changes like code changes: they ship only if the evals hold.</p>
+<h2>Tests that don't need a GPU</h2>
+<p>CI runs the full graph with scripted fake LLM replies and deterministic embeddings. That covers the happy path, query rewrite, refusal, ungrounded answers, missing citations and reasoning-tag stripping, all without a model or a GPU. It is the cheapest way to keep a graph's control flow honest as it grows.</p>
+<h2>Use it from Claude with MCP</h2>
+<p>The same graph is exposed as an MCP tool, <code>ask_documents</code>, so Claude Desktop, Claude Code or any MCP client can query your documents and get cited answers back. The FastAPI service exposes <code>/ask</code>, <code>/ingest</code> and <code>/health</code> for everything else.</p>
+<h2>What's next</h2>
+<p>The roadmap is the usual path from reference to production: hybrid retrieval with BM25 and a cross-encoder reranker, a persistent vector database such as pgvector or Qdrant, tracing with Langfuse, streaming, and PDF and DOCX ingestion.</p>
+<p>The code is MIT-licensed: <a href="https://github.com/abuzar18/llama-agentic-rag">github.com/abuzar18/llama-agentic-rag</a>. If you are building RAG for a team that can't afford confident wrong answers, I'd be glad to compare notes.</p>
+<p><em>Abuzar Zulfiqar is an AI/ML engineer who builds production AI agents, RAG assistants and LLM automation. More at <a href="https://abuzar18.github.io/">abuzar18.github.io</a>.</em></p>
+    </article>
+    <aside class="pg-cta-box">
+      <h2>Need something like this?</h2>
+      <p>I build production AI agents, RAG assistants and LLM automation for startups and SMBs.</p>
+      <p><a class="pg-btn" href="https://www.upwork.com/freelancers/abuzarz4" rel="noreferrer">Hire me on Upwork ↗</a> <a class="pg-btn pg-btn-ghost" href="mailto:abuzarzulfiqar18@gmail.com">Email me</a></p>
+    </aside>
+  </main>
+  <footer class="pg-footer">
+    <p>Abuzar Zulfiqar · AI/ML Engineer · Lahore, Pakistan · open to relocation</p>
+    <p><a href="https://github.com/abuzar18" rel="me">GitHub</a> · <a href="https://www.linkedin.com/in/abuzar-zulfiqar/" rel="me">LinkedIn</a> · <a href="https://www.upwork.com/freelancers/abuzarz4" rel="me">Upwork</a> · <a href="mailto:abuzarzulfiqar18@gmail.com">abuzarzulfiqar18@gmail.com</a> · <a href="../../assets/Abuzar-Zulfiqar-CV.pdf">CV (PDF)</a></p>
+  </footer>
+</body>
+</html>
