@@ -33,3 +33,22 @@ AI agents, agentic AI, LangGraph, LangChain, retrieval-augmented generation (RAG
 - Agentic AI Control Plane: https://github.com/abuzar18/agentic-ai-control-plane
 - AWS MLOps Reference Platform: https://github.com/abuzar18/aws-mlops-reference-platform
 - Production AI Systems Blueprint: https://github.com/abuzar18/production-ai-systems-blueprint
+
+## Case studies
+- [25+ production RAG assistants for policy knowledge](https://abuzar18.github.io/projects/policy-rag-assistants/)
+- [Agentic insurance-appeal drafting with LangGraph](https://abuzar18.github.io/projects/insurance-appeal-agent/)
+- [SAM BOT: conversational BI and text-to-SQL](https://abuzar18.github.io/projects/text-to-sql-bi-assistant/)
+- [30x faster matching over 1.24M records on AWS](https://abuzar18.github.io/projects/serverless-matching-30x/)
+- [Meeting-intelligence automation with Azure OpenAI and Salesforce](https://abuzar18.github.io/projects/meeting-intelligence-automation/)
+- [Llama Agentic RAG (open source)](https://abuzar18.github.io/projects/llama-agentic-rag/)
+- [Hire Abuzar: services and FAQ](https://abuzar18.github.io/hire-ai-engineer/)
+
+## Writing
+- [Building a RAG System That Says "I Don't Know"](https://abuzar18.github.io/blog/self-correcting-rag-llama-langgraph/)
+- [From 126 Seconds to 4: The Unglamorous Fix Behind a 30x Speedup](https://abuzar18.github.io/blog/126-seconds-to-4-postgres-lambda-sqs/)
+
+## Other profiles
+- DEV: https://dev.to/abuzar18
+- Medium: https://medium.com/@abuzarzulfiqar18
+- Hashnode: https://abuzar18.hashnode.dev/
+- Kaggle: https://www.kaggle.com/abuzarzulfiqar
