@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>From 126 Seconds to 4: The Unglamorous Fix Behind a 30x Speedup | Abuzar Zulfiqar</title>
+  <meta name="description" content="How indexed PostgreSQL queries, an SQS and Lambda pipeline, PgBouncer and idempotent retries cut median matching time from about 126 seconds to 4 across 1.24M records.">
+  <meta name="author" content="Abuzar Zulfiqar">
+  <meta name="theme-color" content="#07110f">
+  <meta name="color-scheme" content="dark">
+  <link rel="canonical" href="https://abuzar18.github.io/blog/126-seconds-to-4-postgres-lambda-sqs/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="From 126 Seconds to 4: The Unglamorous Fix Behind a 30x Speedup | Abuzar Zulfiqar">
+  <meta property="og:description" content="How indexed PostgreSQL queries, an SQS and Lambda pipeline, PgBouncer and idempotent retries cut median matching time from about 126 seconds to 4 across 1.24M records.">
+  <meta property="og:url" content="https://abuzar18.github.io/blog/126-seconds-to-4-postgres-lambda-sqs/">
+  <meta property="og:image" content="https://abuzar18.github.io/assets/og-abuzar-zulfiqar.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/pages.css?v=20261123-2">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "From 126 Seconds to 4: The Unglamorous Fix Behind a 30x Speedup", "description": "How indexed PostgreSQL queries, an SQS and Lambda pipeline, PgBouncer and idempotent retries cut median matching time from about 126 seconds to 4 across 1.24M records.", "url": "https://abuzar18.github.io/blog/126-seconds-to-4-postgres-lambda-sqs/", "datePublished": "2026-11-26", "dateModified": "2026-11-26", "author": {"@type": "Person", "@id": "https://abuzar18.github.io/#person", "name": "Abuzar Zulfiqar", "url": "https://abuzar18.github.io/"}, "keywords": "postgres, aws, performance, python", "image": "https://abuzar18.github.io/assets/og-abuzar-zulfiqar.jpg", "mainEntityOfPage": "https://abuzar18.github.io/blog/126-seconds-to-4-postgres-lambda-sqs/"}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://abuzar18.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Writing", "item": "https://abuzar18.github.io/blog/"}, {"@type": "ListItem", "position": 3, "name": "From 126 seconds to 4", "item": "https://abuzar18.github.io/blog/126-seconds-to-4-postgres-lambda-sqs/"}]}, {"@type": "Person", "@id": "https://abuzar18.github.io/#person", "name": "Abuzar Zulfiqar", "url": "https://abuzar18.github.io/"}]}</script>
+</head>
+<body>
+  <header class="pg-header">
+    <a class="pg-brand" href="../../"><span class="pg-mark">AZ</span> Abuzar Zulfiqar</a>
+    <nav aria-label="Primary">
+      <a href="../../projects/">Case studies</a>
+      <a href="../../blog/">Writing</a>
+      <a href="../../hire-ai-engineer/">Hire</a>
+      <a class="pg-cta" href="https://www.upwork.com/freelancers/abuzarz4" rel="noreferrer">Start a project ↗</a>
+    </nav>
+  </header>
+  <main class="pg-main">
+    <article class="pg-article pg-prose">
+      <p class="pg-kicker">Writing · 2026-11-26</p>
+      <h1>From 126 Seconds to 4: The Unglamorous Fix Behind a 30x Speedup</h1>
+      <p class="pg-meta">By <a href="../../">Abuzar Zulfiqar</a> · 2026-11-26</p>
+      <p>A matching feature I worked on took about 126 seconds to answer a single request at the median. After the fix it took 4. Nothing about the fix was clever, and I think that is the useful part of the story.</p>
+<p>The feature matched people against a table of about 1.24 million account records. It had to keep working with 100 requests in flight at once. When I started, the median response was a little over two minutes.</p>
+<h2>Where the time went</h2>
+<p>The code walked through records one after another and checked each one. With a few thousand rows that is fine. With 1.24 million rows and many users at once, every request paid for a full pass over the data, and the requests queued up behind each other.</p>
+<p>There was no hidden bug. The design simply didn't match the size of the data any more.</p>
+<h2>What I changed</h2>
+<p><strong>1. Let the database do the searching.</strong> I normalized the data the matching logic needed into proper tables and added indexes for the fields it filtered on. The application stopped scanning rows itself and asked PostgreSQL a precise question instead. This was the biggest single win.</p>
+<p><strong>2. Take heavy work off the request path.</strong> Work that didn't need to finish before the user got an answer moved to an event-driven path: API Gateway receives the request, a message goes onto SQS, and Lambda workers process it. Large payloads go to S3, and only a reference travels through the queue, so messages stay small.</p>
+<p><strong>3. Protect the database from the fix.</strong> Once work runs in parallel, the database becomes the bottleneck you created. I put PgBouncer in front of PostgreSQL for connection pooling and set concurrency limits on the workers, so a spike in traffic can't open hundreds of connections at once.</p>
+<p><strong>4. Make retries safe.</strong> Queues deliver messages more than once, and networks fail. Every step became idempotent, so processing the same message twice does no harm, and failed calls retry with exponential backoff instead of hammering the service that just failed.</p>
+<h2>The result</h2>
+<p>Median response time went from about 126 seconds to 4 seconds, across 1.24 million records at 100 concurrent requests. That is roughly 30 times faster.</p>
+<h2>What I took from it</h2>
+<ul>
+<li><strong>Measure first.</strong> The p50 number told me this was a design problem, not a tuning problem. Tweaking timeouts would have hidden it.</li>
+<li><strong>Indexes beat cleverness.</strong> Most "slow AI feature" problems I've seen are ordinary data access problems wearing an AI label.</li>
+<li><strong>Async is not free.</strong> Moving work to queues helps only if you also handle duplicates, retries and database load. Otherwise you trade a slow system for a flaky one.</li>
+<li><strong>Keep the boring parts boring.</strong> PgBouncer, SQS and an index are not exciting. They are why the system still behaves at 100 concurrent requests.</li>
+</ul>
+<p>If you are looking at a feature that got slow as your data grew, start with the query plan before you reach for a bigger instance.</p>
+<p><em>Abuzar Zulfiqar is an AI/ML engineer who builds production AI agents, RAG assistants and the backends behind them. More case studies at <a href="https://abuzar18.github.io/projects/">abuzar18.github.io</a>.</em></p>
+    </article>
+    <aside class="pg-cta-box">
+      <h2>Need something like this?</h2>
+      <p>I build production AI agents, RAG assistants and LLM automation for startups and SMBs.</p>
+      <p><a class="pg-btn" href="https://www.upwork.com/freelancers/abuzarz4" rel="noreferrer">Hire me on Upwork ↗</a> <a class="pg-btn pg-btn-ghost" href="mailto:abuzarzulfiqar18@gmail.com">Email me</a></p>
+    </aside>
+  </main>
+  <footer class="pg-footer">
+    <p>Abuzar Zulfiqar · AI/ML Engineer · Lahore, Pakistan · open to relocation</p>
+    <p><a href="https://github.com/abuzar18" rel="me">GitHub</a> · <a href="https://www.linkedin.com/in/abuzar-zulfiqar/" rel="me">LinkedIn</a> · <a href="https://www.upwork.com/freelancers/abuzarz4" rel="me">Upwork</a> · <a href="mailto:abuzarzulfiqar18@gmail.com">abuzarzulfiqar18@gmail.com</a> · <a href="../../assets/Abuzar-Zulfiqar-CV.pdf">CV (PDF)</a></p>
+  </footer>
+</body>
+</html>
