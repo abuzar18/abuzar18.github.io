@@ -2,62 +2,67 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://abuzar18.github.io/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://abuzar18.github.io/projects/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://abuzar18.github.io/projects/policy-rag-assistants/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://abuzar18.github.io/projects/insurance-appeal-agent/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://abuzar18.github.io/projects/text-to-sql-bi-assistant/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://abuzar18.github.io/projects/serverless-matching-30x/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://abuzar18.github.io/projects/meeting-intelligence-automation/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://abuzar18.github.io/projects/llama-agentic-rag/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://abuzar18.github.io/hire-ai-engineer/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://abuzar18.github.io/blog/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-26</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abuzar18.github.io/blog/126-seconds-to-4-postgres-lambda-sqs/</loc>
+    <lastmod>2026-11-26</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://abuzar18.github.io/blog/self-correcting-rag-llama-langgraph/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://abuzar18.github.io/assets/Abuzar-Zulfiqar-CV.pdf</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <priority>0.8</priority>
   </url>
 </urlset>
