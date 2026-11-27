@@ -34,6 +34,7 @@ AI agents, agentic AI, LangGraph, LangChain, retrieval-augmented generation (RAG
 - Agentic AI Control Plane: https://github.com/abuzar18/agentic-ai-control-plane
 - AWS MLOps Reference Platform: https://github.com/abuzar18/aws-mlops-reference-platform
 - Production AI Systems Blueprint: https://github.com/abuzar18/production-ai-systems-blueprint
+- Production AI Notes (runnable scripts behind the numbers in my writing): https://github.com/abuzar18/production-ai-notes
 
 ## Case studies
 - [All case studies](https://abuzar18.github.io/projects/)
