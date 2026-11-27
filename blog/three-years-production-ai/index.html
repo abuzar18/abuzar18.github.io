@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Three Years of Shipping Production AI: What I Built, What Got Hard, What I Learned | Abuzar Zulfiqar</title>
+  <meta name="description" content="A look back at three years of building production AI: 25+ RAG assistants, an agentic insurance-appeal workflow, text-to-SQL, a 30x backend speedup and the lessons behind them.">
+  <meta name="author" content="Abuzar Zulfiqar">
+  <meta name="theme-color" content="#07110f">
+  <meta name="color-scheme" content="dark">
+  <link rel="canonical" href="https://abuzar18.github.io/blog/three-years-production-ai/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Three Years of Shipping Production AI: What I Built, What Got Hard, What I Learned | Abuzar Zulfiqar">
+  <meta property="og:description" content="A look back at three years of building production AI: 25+ RAG assistants, an agentic insurance-appeal workflow, text-to-SQL, a 30x backend speedup and the lessons behind them.">
+  <meta property="og:url" content="https://abuzar18.github.io/blog/three-years-production-ai/">
+  <meta property="og:image" content="https://abuzar18.github.io/assets/og-abuzar-zulfiqar.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/pages.css?v=20261127-1">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "Three Years of Shipping Production AI: What I Built, What Got Hard, What I Learned", "description": "A look back at three years of building production AI: 25+ RAG assistants, an agentic insurance-appeal workflow, text-to-SQL, a 30x backend speedup and the lessons behind them.", "url": "https://abuzar18.github.io/blog/three-years-production-ai/", "datePublished": "2026-11-27", "dateModified": "2026-11-27", "author": {"@type": "Person", "@id": "https://abuzar18.github.io/#person", "name": "Abuzar Zulfiqar", "url": "https://abuzar18.github.io/"}, "keywords": "ai engineering, rag, ai agents, career", "image": "https://abuzar18.github.io/assets/og-abuzar-zulfiqar.jpg", "mainEntityOfPage": "https://abuzar18.github.io/blog/three-years-production-ai/"}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://abuzar18.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Writing", "item": "https://abuzar18.github.io/blog/"}, {"@type": "ListItem", "position": 3, "name": "Three years of shipping production AI", "item": "https://abuzar18.github.io/blog/three-years-production-ai/"}]}, {"@type": "Person", "@id": "https://abuzar18.github.io/#person", "name": "Abuzar Zulfiqar", "url": "https://abuzar18.github.io/"}]}</script>
+</head>
+<body>
+  <header class="pg-header">
+    <a class="pg-brand" href="../../"><span class="pg-mark">AZ</span> Abuzar Zulfiqar</a>
+    <nav aria-label="Primary">
+      <a href="../../projects/">Case studies</a>
+      <a href="../../blog/">Writing</a>
+      <a href="../../hire-ai-engineer/">Hire</a>
+      <a class="pg-cta" href="mailto:abuzarzulfiqar18@gmail.com">Get in touch ↗</a>
+    </nav>
+  </header>
+  <main class="pg-main">
+    <article class="pg-article pg-prose">
+      <p class="pg-kicker">Writing · 2026-11-27</p>
+      <h1>Three Years of Shipping Production AI: What I Built, What Got Hard, What I Learned</h1>
+      <p class="pg-meta">By <a href="../../">Abuzar Zulfiqar</a> · 2026-11-27</p>
+      <p>I have spent about three years building AI systems that real people depend on, and I have never written about it as a whole. This is that post: what I worked on, what went wrong or got hard, and what I would tell a team starting today.</p>
+<p>No client names, and no code that isn't mine to share. The numbers are the ones I can stand behind.</p>
+<h2>Before industry: a research lab</h2>
+<p>At FAST-NUCES I led COLAB, a 30-member applied AI research team, while finishing my CS degree. We worked across NLP and machine learning. One project used an RNN on Wi-Fi signals to recognise human activity, running on a Raspberry Pi.</p>
+<p>The main thing research taught me was discipline about experiments: write down what you're testing, keep it reproducible, and don't trust a result you can't rerun. That habit turned out to matter more in production than any model.</p>
+<h2>OptimusFox: from intern to shipping at scale (2023 to 2025)</h2>
+<p>I joined OptimusFox as an AI intern in June 2023 and became an Associate AI Engineer about two months later. Part of my role was R&amp;D: research a new GenAI approach, prototype it, and hand what worked to the delivery team.</p>
+<p><strong>25+ policy RAG assistants.</strong> The hard part was not answering questions. It was keeping answers current. Policy documents change, and a stale index gives a confident wrong answer. We automated ingestion end to end (ETL, chunking, embedding and index sync on Kubernetes), which cut manual refresh work by about 90%. Prompt routing and Redis caching brought inference latency down about 40% and API cost down 35%. We reused one delivery pattern, so each new assistant became configuration instead of a new build.</p>
+<p><strong>An agentic insurance-appeal workflow.</strong> Appeals are long, rule-heavy documents, and every unsupported claim weakens them. I modelled the process as a LangGraph state machine: ingest documents, extract facts, retrieve policy clauses, then draft with citations. In a regulated domain, the controls were half the work: PHI/PII redaction, audit logs, and prompt and model versioning. Drafting time fell by 60 to 70%.</p>
+<p><strong>SAM BOT, a conversational BI assistant.</strong> Text-to-SQL is easy to demo and hard to get right, because "revenue" or "active customer" means something specific in every business. What made it useful was encoding those business rules into the prompts. Manual analysis time dropped by about 60%.</p>
+<h2>Rolustech: when the bottleneck isn't the model (2025 to 2026)</h2>
+<p>At Rolustech I worked on LLM research and enrichment pipelines, meeting intelligence and backend performance.</p>
+<p><strong>126 seconds to 4.</strong> A matching feature took about two minutes at the median, across 1.24 million records. Nothing about it was an AI problem. The code scanned records one by one. Indexed PostgreSQL queries, an event-driven path on Lambda and SQS, PgBouncer and safe retries brought the median to 4 seconds at 100 concurrent requests.</p>
+<p><strong>Meeting notes into Salesforce.</strong> Meeting bots, recording and transcript webhooks into S3, Azure OpenAI summaries and action items, synced to the CRM. Webhooks arrive twice and calls fail, so idempotency, deduplication, signed requests and replay-safe recovery had to be designed in from the start.</p>
+<p><strong>Watching the meter.</strong> I added per-request token, cost and latency telemetry, and found and fixed a billing calculation for reasoning tokens. If you can't see cost per request, you find out about cost problems from the invoice.</p>
+<h2>Now: independent</h2>
+<p>Since August 2026 I've worked independently with startups and SMBs. I also packaged the patterns I kept repeating into open-source references: a self-correcting, citation-grounded RAG system with an evaluation harness, an agent control plane with policy gates and human approval, and an AWS MLOps reference with release gates. I run my own small e-commerce store too, with an automated repricing system. It's a good reminder of what it's like to live with your own automation.</p>
+<h2>What three years taught me</h2>
+<p><strong>Most "AI problems" are data and systems problems.</strong> The biggest wins I've had came from indexes, queues, caching and ingestion, not from a bigger model.</p>
+<p><strong>Controls aren't extra work, they're the product.</strong> Redaction, audit trails, approval steps and idempotency are what let a business trust an AI system with real work.</p>
+<p><strong>Measure before you change anything.</strong> A p50 number, a cost per request or a fixed eval set turns arguments into decisions.</p>
+<p><strong>Prefer refusals to confident wrong answers.</strong> A system that says "I don't know" when the evidence isn't there is worth more than one that always answers.</p>
+<p><strong>Design for the team that owns it next.</strong> Clear contracts, logs and runbooks outlast any clever prompt.</p>
+<h2>What I'm looking for</h2>
+<p>I'm open to freelance AI projects: agents, RAG, LLM automation and AI architecture reviews. For larger builds I work with a small team of engineers, and I stay the technical lead and single point of contact. If you have a prototype that works but you're unsure about cost, risk or scale, I'd like to hear about it.</p>
+<p><em>Also on <a href="https://dev.to/abuzar18" rel="me">DEV</a>, <a href="https://abuzar18.hashnode.dev/" rel="me">Hashnode</a> and <a href="https://medium.com/@abuzarzulfiqar18" rel="me">Medium</a>. More case studies at <a href="https://abuzar18.github.io/projects/">abuzar18.github.io</a>.</em></p>
+    </article>
+    <aside class="pg-cta-box">
+      <h2>Need something like this?</h2>
+      <p>I build production AI agents, RAG assistants and LLM automation for founders, CTOs and product teams.</p>
+      <p><a class="pg-btn" href="mailto:abuzarzulfiqar18@gmail.com">Email me</a> <a class="pg-btn pg-btn-ghost" href="https://www.linkedin.com/in/abuzar-zulfiqar/" rel="noreferrer">Connect on LinkedIn ↗</a></p>
+    </aside>
+  </main>
+  <footer class="pg-footer">
+    <p>Abuzar Zulfiqar · AI/ML Engineer · Lahore, Pakistan · open to relocation</p>
+    <p><a href="https://github.com/abuzar18" rel="me">GitHub</a> · <a href="https://www.linkedin.com/in/abuzar-zulfiqar/" rel="me">LinkedIn</a> · <a href="https://www.upwork.com/freelancers/abuzarz4" rel="me">Upwork</a> · <a href="https://dev.to/abuzar18" rel="me">DEV</a> · <a href="https://medium.com/@abuzarzulfiqar18" rel="me">Medium</a> · <a href="https://abuzar18.hashnode.dev/" rel="me">Hashnode</a> · <a href="mailto:abuzarzulfiqar18@gmail.com">abuzarzulfiqar18@gmail.com</a> · <a href="../../assets/Abuzar-Zulfiqar-CV.pdf">CV (PDF)</a></p>
+  </footer>
+</body>
+</html>
