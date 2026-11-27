@@ -7,6 +7,7 @@
 - Role: AI/ML Engineer | AI Agents, RAG & LLM Automation | Independent AI Engineer
 - Location: Lahore, Pakistan. Open to relocation worldwide and to remote work.
 - Experience: 3+ years in production Generative AI (Rolustech, OptimusFox), independent since Aug 2026
+- Capacity: takes on larger projects with a small team of engineers, staying the single technical lead and point of contact
 - Education: BS Computer Science, FAST-NUCES (2019-2023)
 - Certification: Microsoft Certified Azure AI Engineer Associate (2024)
 
