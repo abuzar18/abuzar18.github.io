@@ -97,7 +97,7 @@ def windowed(n):
 for n in (5, 10, 20, 40):
     print(n, full_history(n), windowed(n))
 </code></pre>
-<p>These are assumptions, not a benchmark. Plug in your own numbers. The shape of the curve is the point.</p>
+<p>These are assumptions, not a benchmark. Plug in your own numbers. The shape of the curve is the point. The script is in <a href="https://github.com/abuzar18/production-ai-notes/tree/main/agent-context-growth">production-ai-notes</a>.</p>
 <h2>2. Tools with more power than the task needs</h2>
 <p>OWASP's Top 10 for LLM applications calls this "excessive agency": giving an agent tools or permissions it doesn't need. In a lot of agent setups, one set of credentials can read, write and delete, because that was the quickest thing to wire up.</p>
 <p><strong>What to check:</strong> separate read and write tools, scoped credentials per tool, and a human approval step for anything irreversible (payments, deletes, outbound email). Approval should be a state in the workflow with an audit record, not a checkbox in the UI.</p>
@@ -109,7 +109,7 @@ for n in (5, 10, 20, 40):
 <p>Prompts change, models get upgraded and documents go stale. Without an evaluation set, quality drifts and the first signal is a customer complaint.</p>
 <p><strong>What to check:</strong> a fixed set of representative questions, including ones the system should refuse. Run it on every prompt or model change. Measure the false-refusal rate as well as accuracy, because tightening one usually moves the other.</p>
 <h2>5. Tail latency nobody planned for</h2>
-<p>Parallel agents feel fast in a demo. In production, a coordinator that waits for every worker finishes when the slowest one does. In a simulation I ran with 10 parallel workers, the median wait was about 2.5 times a single worker's, and 80% of runs had at least one worker slower than 15 seconds.</p>
+<p>Parallel agents feel fast in a demo. In production, a coordinator that waits for every worker finishes when the slowest one does. In a simulation I ran with 10 parallel workers, the median wait was about 2.5 times a single worker's, and 80% of runs had at least one worker slower than 15 seconds. (<a href="https://github.com/abuzar18/production-ai-notes/tree/main/agent-fanout-tail-latency">simulation code</a>)</p>
 <p><strong>What to check:</strong> per-tool and per-worker timeouts, a fallback answer, and p95 latency as an explicit target, not just the average.</p>
 <h2>Why a review, and why early</h2>
 <p>None of these are exotic. They are the ordinary data, permissions and reliability problems of any distributed system, showing up again around a model. The difference is that AI systems hide them well: the output still looks fluent while the cost, the risk or the error rate climbs.</p>
