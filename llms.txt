@@ -36,6 +36,7 @@ AI agents, agentic AI, LangGraph, LangChain, retrieval-augmented generation (RAG
 - Production AI Systems Blueprint: https://github.com/abuzar18/production-ai-systems-blueprint
 
 ## Case studies
+- [All case studies](https://abuzar18.github.io/projects/)
 - [25+ production RAG assistants for policy knowledge](https://abuzar18.github.io/projects/policy-rag-assistants/)
 - [Agentic insurance-appeal drafting with LangGraph](https://abuzar18.github.io/projects/insurance-appeal-agent/)
 - [SAM BOT: conversational BI and text-to-SQL](https://abuzar18.github.io/projects/text-to-sql-bi-assistant/)
@@ -45,6 +46,7 @@ AI agents, agentic AI, LangGraph, LangChain, retrieval-augmented generation (RAG
 - [Hire Abuzar: services and FAQ](https://abuzar18.github.io/hire-ai-engineer/)
 
 ## Writing
+- [All writing](https://abuzar18.github.io/blog/)
 - [Five Ways an Unreviewed AI Architecture Breaks in Production](https://abuzar18.github.io/blog/ai-architecture-review-failure-modes/)
 - [Three Years of Shipping Production AI](https://abuzar18.github.io/blog/three-years-production-ai/)
 - [Building a RAG System That Says "I Don't Know"](https://abuzar18.github.io/blog/self-correcting-rag-llama-langgraph/)
