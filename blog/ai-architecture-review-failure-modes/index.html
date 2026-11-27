@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Five Ways an Unreviewed AI Architecture Breaks in Production | Abuzar Zulfiqar</title>
+  <meta name="description" content="Five failure modes to check in any AI architecture review: agent cost that grows with the square of steps, excessive agency, unsafe retries, missing evals and tail latency.">
+  <meta name="author" content="Abuzar Zulfiqar">
+  <meta name="theme-color" content="#07110f">
+  <meta name="color-scheme" content="dark">
+  <link rel="canonical" href="https://abuzar18.github.io/blog/ai-architecture-review-failure-modes/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Five Ways an Unreviewed AI Architecture Breaks in Production | Abuzar Zulfiqar">
+  <meta property="og:description" content="Five failure modes to check in any AI architecture review: agent cost that grows with the square of steps, excessive agency, unsafe retries, missing evals and tail latency.">
+  <meta property="og:url" content="https://abuzar18.github.io/blog/ai-architecture-review-failure-modes/">
+  <meta property="og:image" content="https://abuzar18.github.io/assets/og-abuzar-zulfiqar.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/pages.css?v=20261127-1">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "Five Ways an Unreviewed AI Architecture Breaks in Production", "description": "Five failure modes to check in any AI architecture review: agent cost that grows with the square of steps, excessive agency, unsafe retries, missing evals and tail latency.", "url": "https://abuzar18.github.io/blog/ai-architecture-review-failure-modes/", "datePublished": "2026-11-27", "dateModified": "2026-11-27", "author": {"@type": "Person", "@id": "https://abuzar18.github.io/#person", "name": "Abuzar Zulfiqar", "url": "https://abuzar18.github.io/"}, "keywords": "ai architecture, ai agents, llm cost, architecture review", "image": "https://abuzar18.github.io/assets/og-abuzar-zulfiqar.jpg", "mainEntityOfPage": "https://abuzar18.github.io/blog/ai-architecture-review-failure-modes/"}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://abuzar18.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Writing", "item": "https://abuzar18.github.io/blog/"}, {"@type": "ListItem", "position": 3, "name": "Five ways an unreviewed AI architecture breaks", "item": "https://abuzar18.github.io/blog/ai-architecture-review-failure-modes/"}]}, {"@type": "Person", "@id": "https://abuzar18.github.io/#person", "name": "Abuzar Zulfiqar", "url": "https://abuzar18.github.io/"}]}</script>
+</head>
+<body>
+  <header class="pg-header">
+    <a class="pg-brand" href="../../"><span class="pg-mark">AZ</span> Abuzar Zulfiqar</a>
+    <nav aria-label="Primary">
+      <a href="../../projects/">Case studies</a>
+      <a href="../../blog/">Writing</a>
+      <a href="../../hire-ai-engineer/">Hire</a>
+      <a class="pg-cta" href="mailto:abuzarzulfiqar18@gmail.com">Get in touch ↗</a>
+    </nav>
+  </header>
+  <main class="pg-main">
+    <article class="pg-article pg-prose">
+      <p class="pg-kicker">Writing · 2026-11-27</p>
+      <h1>Five Ways an Unreviewed AI Architecture Breaks in Production</h1>
+      <p class="pg-meta">By <a href="../../">Abuzar Zulfiqar</a> · 2026-11-27</p>
+      <p>AI projects rarely fail at the demo. The demo works. They fail three or six months later, when the agent has more tools, more users and more data than anyone planned for, and nobody ever sat down and reviewed the architecture as a whole.</p>
+<p>That is going to get more common, not less. Agent tooling moved fast this year. Google added a /swarm mode to Antigravity, where a coordinator model hands work to parallel agents. The MCP spec moved to a stateless core with stricter auth in July. It has never been easier to wire a model to real systems. It is just as easy to wire it in a way that breaks quietly.</p>
+<p>Here are the five failure modes I would look for first in any AI architecture review, and what to check for each.</p>
+<h2>1. Cost that grows faster than usage</h2>
+<p>Agent loops usually re-send the whole conversation on every step: the system prompt, the tool definitions and every tool result so far. That makes input tokens grow roughly with the square of the number of steps, not in a straight line.</p>
+<p>I worked it out with a small script. Assume a 2,000-token system prompt plus tools, and 1,500 tokens of tool output added per step. Here is the total input the model reads across a whole run:</p>
+<table>
+<thead>
+<tr>
+<th>Steps</th>
+<th>Full history re-sent</th>
+<th>Avg per step</th>
+<th>Last 4 results + summary</th>
+<th>Saving</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td>32,500</td>
+<td>6,500</td>
+<td>32,500</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>10</td>
+<td>102,500</td>
+<td>10,250</td>
+<td>80,000</td>
+<td>22%</td>
+</tr>
+<tr>
+<td>20</td>
+<td>355,000</td>
+<td>17,750</td>
+<td>175,000</td>
+<td>51%</td>
+</tr>
+<tr>
+<td>40</td>
+<td>1,310,000</td>
+<td>32,750</td>
+<td>365,000</td>
+<td>72%</td>
+</tr>
+</tbody>
+</table>
+<p>Going from 20 steps to 40 doesn't double the tokens. It multiplies them by about 3.7. A task that cost cents in testing can cost dollars per run once real users ask harder questions.</p>
+<p><strong>What to check:</strong> a hard cap on steps per task, a context policy (windowing or summarising old tool output), and cost per task tracked as a metric, not just monthly spend.</p>
+<pre><code class="language-python">S, T, WINDOW = 2_000, 1_500, 4  # system prompt, tokens per tool result, results kept
+
+def full_history(n):
+    return sum(S + k * T for k in range(1, n + 1))
+
+def windowed(n):
+    return sum(S + min(k, WINDOW) * T + (T if k &gt; WINDOW else 0) for k in range(1, n + 1))
+
+for n in (5, 10, 20, 40):
+    print(n, full_history(n), windowed(n))
+</code></pre>
+<p>These are assumptions, not a benchmark. Plug in your own numbers. The shape of the curve is the point.</p>
+<h2>2. Tools with more power than the task needs</h2>
+<p>OWASP's Top 10 for LLM applications calls this "excessive agency": giving an agent tools or permissions it doesn't need. In a lot of agent setups, one set of credentials can read, write and delete, because that was the quickest thing to wire up.</p>
+<p><strong>What to check:</strong> separate read and write tools, scoped credentials per tool, and a human approval step for anything irreversible (payments, deletes, outbound email). Approval should be a state in the workflow with an audit record, not a checkbox in the UI.</p>
+<h2>3. Retries that do the work twice</h2>
+<p>Queues deliver messages more than once. Webhooks get replayed. Agents retry failed tool calls. Without idempotency, a retry means a second CRM update, a second email or a second charge.</p>
+<p>When I built a meeting-to-CRM pipeline, handling duplicate webhooks was part of the design from the start. The fix is boring and it works: idempotency keys, deduplication on receive and replay-safe recovery.</p>
+<p><strong>What to check:</strong> can every write step run twice safely? If nobody can answer that quickly, it can't.</p>
+<h2>4. No way to tell when answers get worse</h2>
+<p>Prompts change, models get upgraded and documents go stale. Without an evaluation set, quality drifts and the first signal is a customer complaint.</p>
+<p><strong>What to check:</strong> a fixed set of representative questions, including ones the system should refuse. Run it on every prompt or model change. Measure the false-refusal rate as well as accuracy, because tightening one usually moves the other.</p>
+<h2>5. Tail latency nobody planned for</h2>
+<p>Parallel agents feel fast in a demo. In production, a coordinator that waits for every worker finishes when the slowest one does. In a simulation I ran with 10 parallel workers, the median wait was about 2.5 times a single worker's, and 80% of runs had at least one worker slower than 15 seconds.</p>
+<p><strong>What to check:</strong> per-tool and per-worker timeouts, a fallback answer, and p95 latency as an explicit target, not just the average.</p>
+<h2>Why a review, and why early</h2>
+<p>None of these are exotic. They are the ordinary data, permissions and reliability problems of any distributed system, showing up again around a model. The difference is that AI systems hide them well: the output still looks fluent while the cost, the risk or the error rate climbs.</p>
+<p>A review before scaling is cheap. Usually it's a few days to map the data flow, the failure modes, the security boundaries, the eval plan and the cost per task. Rebuilding after an incident is not cheap, especially when the agent has already written to production systems.</p>
+<p>If you only do one thing this quarter: pick your most-used AI workflow and write down its worst-case cost per task, what it can change without a human, and how you'd know if its answers got worse last week. If any of the three is "not sure", that's where to start.</p>
+<p>I do AI architecture reviews and production hardening for founders and CTOs. I'm open to freelance projects, and for larger builds I work with a small team. If your prototype works but you're not sure it's safe to scale, send me a message.</p>
+<hr />
+<p><em>Sources: <a href="https://www.infoworld.com/article/4248403/google-adds-multi-model-orchestrator-gemini-4-hydrogen-to-antigravity.html">Google Antigravity /swarm (InfoWorld)</a>, <a href="https://claude.com/blog/bringing-mcp-2026-07-28-to-claude">MCP 2026-07-28 spec (Anthropic)</a>, <a href="https://genai.owasp.org/llm-top-10/">OWASP Top 10 for LLM Applications</a>.</em></p>
+<p><em>Also on <a href="https://dev.to/abuzar18" rel="me">DEV</a>, <a href="https://abuzar18.hashnode.dev/" rel="me">Hashnode</a> and <a href="https://medium.com/@abuzarzulfiqar18" rel="me">Medium</a>. More case studies at <a href="https://abuzar18.github.io/projects/">abuzar18.github.io</a>.</em></p>
+    </article>
+    <aside class="pg-cta-box">
+      <h2>Need something like this?</h2>
+      <p>I build production AI agents, RAG assistants and LLM automation for founders, CTOs and product teams.</p>
+      <p><a class="pg-btn" href="mailto:abuzarzulfiqar18@gmail.com">Email me</a> <a class="pg-btn pg-btn-ghost" href="https://www.linkedin.com/in/abuzar-zulfiqar/" rel="noreferrer">Connect on LinkedIn ↗</a></p>
+    </aside>
+  </main>
+  <footer class="pg-footer">
+    <p>Abuzar Zulfiqar · AI/ML Engineer · Lahore, Pakistan · open to relocation</p>
+    <p><a href="https://github.com/abuzar18" rel="me">GitHub</a> · <a href="https://www.linkedin.com/in/abuzar-zulfiqar/" rel="me">LinkedIn</a> · <a href="https://www.upwork.com/freelancers/abuzarz4" rel="me">Upwork</a> · <a href="https://dev.to/abuzar18" rel="me">DEV</a> · <a href="https://medium.com/@abuzarzulfiqar18" rel="me">Medium</a> · <a href="https://abuzar18.hashnode.dev/" rel="me">Hashnode</a> · <a href="mailto:abuzarzulfiqar18@gmail.com">abuzarzulfiqar18@gmail.com</a> · <a href="../../assets/Abuzar-Zulfiqar-CV.pdf">CV (PDF)</a></p>
+  </footer>
+</body>
+</html>
