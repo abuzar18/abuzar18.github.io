@@ -1,12 +1,12 @@
 # Abuzar Zulfiqar
 
-> AI/ML Engineer in Lahore, Pakistan (open to relocation worldwide, on-site, hybrid or remote). Builds production AI agents, RAG assistants, LLM automation and MLOps on Azure and AWS for founders, CTOs and product teams. Available for freelance projects and full-time roles.
+> AI/ML Engineer in Lahore, Pakistan (open to relocation worldwide, on-site, hybrid or remote). Builds production AI agents, RAG assistants, LLM automation and MLOps on Azure and AWS for founders, CTOs and product teams. Open to consulting engagements, senior roles and partnerships.
 
 ## Profile
 - Name: Abuzar Zulfiqar
-- Role: AI/ML Engineer | AI Agents, RAG & LLM Automation | Freelance AI Engineer
+- Role: AI/ML Engineer | AI Agents, RAG & LLM Automation | Independent AI Engineer
 - Location: Lahore, Pakistan. Open to relocation worldwide and to remote work.
-- Experience: 3+ years in production Generative AI (Rolustech, OptimusFox), freelance since Aug 2026
+- Experience: 3+ years in production Generative AI (Rolustech, OptimusFox), independent since Aug 2026
 - Education: BS Computer Science, FAST-NUCES (2019-2023)
 - Certification: Microsoft Certified Azure AI Engineer Associate (2024)
 
