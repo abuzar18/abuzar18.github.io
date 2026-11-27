@@ -47,7 +47,7 @@
   </url>
   <url>
     <loc>https://abuzar18.github.io/blog/</loc>
-    <lastmod>2026-11-26</lastmod>
+    <lastmod>2026-11-27</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
@@ -64,5 +64,15 @@
     <loc>https://abuzar18.github.io/assets/Abuzar-Zulfiqar-CV.pdf</loc>
     <lastmod>2026-11-26</lastmod>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abuzar18.github.io/blog/ai-architecture-review-failure-modes/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://abuzar18.github.io/blog/three-years-production-ai/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <priority>0.7</priority>
   </url>
 </urlset>

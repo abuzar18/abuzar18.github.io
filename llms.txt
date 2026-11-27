@@ -45,6 +45,8 @@ AI agents, agentic AI, LangGraph, LangChain, retrieval-augmented generation (RAG
 - [Hire Abuzar: services and FAQ](https://abuzar18.github.io/hire-ai-engineer/)
 
 ## Writing
+- [Five Ways an Unreviewed AI Architecture Breaks in Production](https://abuzar18.github.io/blog/ai-architecture-review-failure-modes/)
+- [Three Years of Shipping Production AI](https://abuzar18.github.io/blog/three-years-production-ai/)
 - [Building a RAG System That Says "I Don't Know"](https://abuzar18.github.io/blog/self-correcting-rag-llama-langgraph/)
 - [From 126 Seconds to 4: The Unglamorous Fix Behind a 30x Speedup](https://abuzar18.github.io/blog/126-seconds-to-4-postgres-lambda-sqs/)
 
