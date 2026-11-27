@@ -469,3 +469,7 @@ img, video { max-width: 100%; }
   .cred-card { position: static; }
   .experience, .faq { padding: 80px 0; }
 }
+
+/* Writing links inside field notes */
+.field-note h3 a, .note-takeaway a { color: inherit; text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 5px; }
+.field-note h3 a:hover, .note-takeaway a:hover { text-decoration-color: currentColor; }

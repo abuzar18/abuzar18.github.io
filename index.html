@@ -109,6 +109,7 @@
           <span>Agentic AI</span>
           <span>MLOps / LLMOps</span>
           <span>AWS &amp; Azure</span>
+          <span>AI automation &middot; n8n</span>
           <span>Architecture reviews</span>
         </div>
       </div>
@@ -486,7 +487,7 @@
       <div class="field-notes-heading reveal">
         <p class="eyebrow">Field notes</p>
         <h2 id="notes-title">What the work taught me.</h2>
-        <p>Three practical lessons from building and operating these systems.</p>
+        <p>Three practical lessons from building and operating these systems, plus my latest long-form write-ups.</p>
       </div>
       <div class="notes-ledger">
         <article class="field-note reveal">
@@ -506,6 +507,18 @@
           <h3>A model release needs a clear reason, not just a green button.</h3>
           <p>Accuracy, p95 latency, error rate and drift are evaluated together. When a release is blocked, the platform returns the violated policies so a team can act on evidence instead of guessing.</p>
           <div class="note-takeaway"><span>Design consequence</span><b>Promotion gates stay explainable and reversible.</b></div>
+        </article>
+        <article class="field-note reveal">
+          <span class="note-number">WRITING</span>
+          <h3><a href="blog/self-correcting-rag-llama-langgraph/">Building a RAG system that says &ldquo;I don&rsquo;t know&rdquo;</a></h3>
+          <p>Self-correcting RAG on Llama 3.1 and LangGraph: relevance grading, one query rewrite, enforced citations and a groundedness check, measured with refusal accuracy and false-refusal rate.</p>
+          <div class="note-takeaway"><span>Read</span><b><a href="blog/self-correcting-rag-llama-langgraph/">Full write-up &rarr;</a></b></div>
+        </article>
+        <article class="field-note reveal">
+          <span class="note-number">WRITING</span>
+          <h3><a href="blog/126-seconds-to-4-postgres-lambda-sqs/">From 126 seconds to 4: the unglamorous fix</a></h3>
+          <p>Indexes, an SQS and Lambda pipeline, PgBouncer and idempotent retries behind a 30x lower p50 across 1.24M records.</p>
+          <div class="note-takeaway"><span>Read</span><b><a href="blog/126-seconds-to-4-postgres-lambda-sqs/">Full write-up &rarr;</a> &middot; <a href="blog/">All writing</a></b></div>
         </article>
       </div>
     </section>
@@ -533,7 +546,7 @@
         <aside class="stack-card reveal" aria-label="Core technology stack">
           <div class="stack-card-top"><span>CORE STACK</span><i>2026</i></div>
           <div class="stack-cloud">
-            <span class="stack-lg">Python</span><span>FastAPI</span><span>LangGraph</span><span class="stack-lg">AWS</span><span>Azure OpenAI</span><span>Docker</span><span>Kubernetes</span><span class="stack-lg">PostgreSQL</span><span>Redis</span><span>Pydantic</span><span>PyTorch</span><span>GitHub Actions</span>
+            <span class="stack-lg">Python</span><span>FastAPI</span><span>LangGraph</span><span class="stack-lg">AWS</span><span>Azure OpenAI</span><span>Docker</span><span>Kubernetes</span><span class="stack-lg">PostgreSQL</span><span>Redis</span><span>Pydantic</span><span>PyTorch</span><span>GitHub Actions</span><span>n8n</span><span>Claude</span><span>MCP</span>
           </div>
           <div class="stack-footer"><span>Designed for</span><strong>Reliability · traceability · scale</strong></div>
         </aside>

@@ -39,6 +39,12 @@ document.querySelectorAll('.reveal').forEach((element, index) => {
 });
 }
 
+// Show everything for printing and for automated renderers (link previews, crawlers)
+// that capture the page without scrolling, so no section stays invisible.
+const revealAll = () => document.querySelectorAll('.reveal').forEach((el) => el.classList.add('visible'));
+window.addEventListener('beforeprint', revealAll);
+if (navigator.webdriver) revealAll();
+
 document.getElementById('year').textContent = new Date().getFullYear();
 
 document.querySelectorAll('a[target="_blank"]').forEach((link) => {
